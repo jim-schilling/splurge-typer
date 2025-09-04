@@ -1,5 +1,5 @@
 """
-type_helper module - Provides utilities for type checking, conversion and inference
+string module - Provides utilities for type checking, conversion and inference
 
 This module offers a comprehensive set of tools for:
 - Type inference and validation

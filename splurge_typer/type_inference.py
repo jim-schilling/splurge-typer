@@ -1,12 +1,21 @@
 """
-type_helper module - Provides utilities for type checking, conversion and inference
+type_inference module - Provides comprehensive type inference and value conversion utilities
 
-This module offers a comprehensive set of tools for:
-- Type inference and validation
-- Data type conversion
-- String parsing and validation
-- Collection type checking
-- Value profiling and analysis
+This module offers a complete set of tools for intelligent type analysis and conversion:
+- Single value type inference from strings and native types
+- Collection profiling to determine dominant data types across datasets
+- Automatic value conversion to inferred types with proper error handling
+- Performance-optimized incremental type checking for large datasets
+- Mixed type detection and analysis
+- Duck typing utilities for flexible object behavior detection
+- Support for all major Python types including dates, times, and datetimes
+
+Key Features:
+- Efficient processing of large datasets with early termination optimization
+- Configurable thresholds for incremental type checking
+- Comprehensive type coverage including booleans, integers, floats, dates, times, datetimes
+- Robust handling of edge cases (empty values, None, mixed types)
+- Integration with string parsing and duck typing modules
 
 Copyright (c) 2025 Jim Schilling
 
@@ -25,7 +34,48 @@ from splurge_typer.string import String
 
 class TypeInference:
     """
-    TypeInference class - Provides methods for inferring data types and converting values to their inferred types.
+    TypeInference class - Comprehensive type inference and value conversion utilities.
+
+    This class provides a complete suite of methods for intelligent type analysis and conversion,
+    designed to handle both individual values and collections efficiently. It integrates with
+    string parsing and duck typing capabilities to provide robust type inference across
+    diverse data sources.
+
+    Core Capabilities:
+    - Single value type inference for strings and native Python types
+    - Collection profiling to determine dominant types across datasets
+    - Automatic conversion of values to their inferred types
+    - Performance-optimized processing for large datasets using incremental type checking
+    - Mixed type detection and resolution
+    - Configurable thresholds for performance tuning
+    - Duck typing utilities for flexible object behavior analysis
+
+    Performance Features:
+    - Incremental type checking with early termination for large collections
+    - Configurable threshold (_INCREMENTAL_TYPECHECK_THRESHOLD) for optimization
+    - Efficient processing of datasets with 10,000+ items
+    - Smart caching and reuse of type inference results
+
+    Usage Examples:
+        >>> from splurge_typer import TypeInference
+        >>>
+        >>> # Single value inference
+        >>> ti = TypeInference()
+        >>> ti.infer_type('123')           # DataType.INTEGER
+        >>> ti.convert_value('123')        # 123
+        >>>
+        >>> # Collection profiling
+        >>> ti.profile_values(['1', '2', '3'])           # DataType.INTEGER
+        >>> ti.profile_values(['1.1', '2.2', '3.3'])     # DataType.FLOAT
+        >>> ti.profile_values(['1', '2.2', 'abc'])       # DataType.MIXED
+        >>>
+        >>> # Performance optimization
+        >>> ti.profile_values(large_dataset, use_incremental_typecheck=True)
+        >>>
+        >>> # Duck typing utilities
+        >>> ti.is_list_like([1, 2, 3])        # True
+        >>> ti.is_dict_like({'a': 1})         # True
+        >>> ti.is_empty([])                   # True
     """
 
     _INCREMENTAL_TYPECHECK_THRESHOLD = 10_000
@@ -33,7 +83,25 @@ class TypeInference:
     @classmethod
     def get_incremental_typecheck_threshold(cls) -> int:
         """
-        Get the incremental typecheck threshold.
+        Get the threshold for incremental type checking optimization.
+
+        This threshold determines when incremental type checking is enabled for performance
+        optimization. For collections larger than this threshold, the system uses incremental
+        type checking with early termination to avoid processing the entire collection when
+        the result can be determined earlier.
+
+        Returns:
+            The threshold value (default: 10,000 items)
+
+        Note:
+            This value can be modified by changing the _INCREMENTAL_TYPECHECK_THRESHOLD class variable.
+            Lower values enable optimization for smaller datasets but may reduce accuracy for
+            edge cases that require full analysis.
+
+        Examples:
+            >>> TypeInference.get_incremental_typecheck_threshold()  # 10000
+            >>> # Collections with <= 10,000 items use full analysis
+            >>> # Collections with > 10,000 items use incremental checking
         """
         return cls._INCREMENTAL_TYPECHECK_THRESHOLD
 
@@ -42,13 +110,33 @@ class TypeInference:
         value: Any,
     ) -> bool:
         """
-        Check if the value can be inferred as a specific type.
+        Check if a string value can be inferred as a non-string type.
+
+        This method determines whether a given value (typically a string) can be
+        meaningfully converted to a more specific data type beyond just a generic string.
+        It returns True if the value represents a boolean, integer, float, date, time,
+        datetime, or other structured type.
 
         Args:
-            value: The value to check
+            value: The value to check (typically a string)
 
         Returns:
-            True if the value can be inferred as a specific type, False otherwise
+            True if the value can be inferred as a specific non-string type,
+            False if it remains a generic string or is not a string at all
+
+        Note:
+            - Non-string values (int, float, bool, etc.) return False as they don't need inference
+            - String values that represent structured data (dates, numbers, booleans) return True
+            - Generic strings that don't match any pattern return False
+
+        Examples:
+            >>> TypeInference.can_infer('123')           # True (can be int)
+            >>> TypeInference.can_infer('1.23')          # True (can be float)
+            >>> TypeInference.can_infer('true')          # True (can be bool)
+            >>> TypeInference.can_infer('2023-01-01')    # True (can be date)
+            >>> TypeInference.can_infer('hello')         # False (remains string)
+            >>> TypeInference.can_infer(123)             # False (already int)
+            >>> TypeInference.can_infer(None)            # False (not a string)
         """
         if not isinstance(value, str):
             return False
@@ -61,13 +149,38 @@ class TypeInference:
         value: str,
     ) -> DataType:
         """
-        Infer the type of the given value.
+        Infer the most appropriate data type for a given value.
+
+        This method analyzes a value and determines the most suitable data type
+        based on its content and structure. It supports comprehensive type detection
+        including all major Python types and special cases.
 
         Args:
-            value: The value to infer the type for
+            value: The value to analyze (string, number, date/time object, or None)
 
         Returns:
-            The inferred DataType
+            DataType enum value representing the inferred type
+
+        Note:
+            The inference process checks for types in order of specificity:
+            1. Native types (bool, int, float, datetime objects) - returned as-is
+            2. Special values (None, empty strings)
+            3. Structured string patterns (datetimes, dates, times)
+            4. Numeric patterns (integers, floats)
+            5. Boolean patterns
+            6. Fallback to STRING for unmatched values
+
+        Examples:
+            >>> TypeInference.infer_type('123')           # DataType.INTEGER
+            >>> TypeInference.infer_type('1.23')          # DataType.FLOAT
+            >>> TypeInference.infer_type('true')          # DataType.BOOLEAN
+            >>> TypeInference.infer_type('2023-01-01')    # DataType.DATE
+            >>> TypeInference.infer_type('2023-01-01T12:00:00')  # DataType.DATETIME
+            >>> TypeInference.infer_type('14:30:00')      # DataType.TIME
+            >>> TypeInference.infer_type('none')          # DataType.NONE
+            >>> TypeInference.infer_type('')              # DataType.EMPTY
+            >>> TypeInference.infer_type('hello world')   # DataType.STRING
+            >>> TypeInference.infer_type(123)             # DataType.INTEGER (native type)
         """
         return String.infer_type(value)
 
@@ -77,13 +190,35 @@ class TypeInference:
         value: Any,
     ) -> Any:
         """
-        Convert the value to its inferred type.
+        Convert a value to its inferred type automatically.
+
+        This method first infers the most appropriate data type for the given value,
+        then converts the value to that type using appropriate conversion methods.
+        It handles all supported data types including booleans, integers, floats,
+        dates, times, datetimes, and special cases like None and empty strings.
 
         Args:
-            value: The value to convert
+            value: The value to convert (string, number, date/time object, or None)
 
         Returns:
-            The converted value in its inferred type
+            The converted value in its inferred type, or the original value if
+            no conversion is needed/applicable
+
+        Note:
+            - String representations are converted to their appropriate native types
+            - Native Python types (int, float, bool, etc.) are returned as-is
+            - Invalid conversions return None or empty string for their respective types
+            - Date/time conversions use the String module's parsing capabilities
+
+        Examples:
+            >>> TypeInference.convert_value('123')           # 123 (int)
+            >>> TypeInference.convert_value('1.23')          # 1.23 (float)
+            >>> TypeInference.convert_value('true')          # True (bool)
+            >>> TypeInference.convert_value('2023-01-01')    # datetime.date(2023, 1, 1)
+            >>> TypeInference.convert_value('none')          # None
+            >>> TypeInference.convert_value('')              # '' (empty string)
+            >>> TypeInference.convert_value(123)             # 123 (already int, no conversion)
+            >>> TypeInference.convert_value('invalid')       # 'invalid' (remains string)
         """
         inferred_type = cls.infer_type(value)
 
