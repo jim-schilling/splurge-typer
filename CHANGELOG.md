@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) (CalVer).
 
+## [2025.0.1] - 2025-01-01
+
+### Documentation
+- **Enhanced Docstrings**: Comprehensive review and improvement of all module, class, and method docstrings
+  - Updated `type_inference.py` with detailed module overview, performance features, and usage examples
+  - Enhanced `TypeInference` class docstring with core capabilities and integration details
+  - Improved method docstrings for `convert_value()`, `infer_type()`, `can_infer()`, and `get_incremental_typecheck_threshold()`
+  - Verified all other modules (`__init__.py`, `data_type.py`, `duck_typing.py`, `string.py`) have accurate, comprehensive docstrings
+- **Documentation Quality**: Ensured all docstrings accurately reflect actual behavior with proper examples and parameter descriptions
+
+---
+
 ## [2025.0.0] - 2025-01-01
 
 ### Added
@@ -64,6 +76,7 @@ and this project adheres to [Calendar Versioning](https://calver.org/) (CalVer).
 ---
 
 ## Version History
+- **2025.0.1**: Documentation improvements and enhanced docstrings
 - **2025.0.0**: Initial release with complete type inference functionality
 
 ---

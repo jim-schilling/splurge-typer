@@ -34,10 +34,10 @@ Please preserve this header and all related material when sharing!
 This module is licensed under the MIT License.
 """
 
-from .data_type import DataType
-from .duck_typing import DuckTyping
-from .string import String
-from .type_inference import TypeInference
+from splurge_typer.data_type import DataType
+from splurge_typer.duck_typing import DuckTyping
+from splurge_typer.string import String
+from splurge_typer.type_inference import TypeInference
 
-__version__ = "2025.0.0"
+__version__ = "2025.0.1"
 __all__ = ["DataType", "String", "TypeInference", "DuckTyping"]
