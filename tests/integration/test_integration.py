@@ -54,13 +54,7 @@ class TestLibraryIntegration:
 
         # Individual processing
         types = [ti.infer_type(v) for v in mixed_values]
-        expected_types = [
-            DataType.INTEGER,
-            DataType.FLOAT,
-            DataType.BOOLEAN,
-            DataType.DATE,
-            DataType.STRING
-        ]
+        expected_types = [DataType.INTEGER, DataType.FLOAT, DataType.BOOLEAN, DataType.DATE, DataType.STRING]
         assert types == expected_types
 
     def test_date_time_processing(self):

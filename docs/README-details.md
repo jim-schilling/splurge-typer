@@ -253,6 +253,67 @@ print(f"Threshold: {threshold}")  # 10000
 - **Performance**: Large dataset processing verification
 - **Integration**: Full workflow testing
 
+### Testing strategy (new)
+
+We follow a layered testing strategy to balance fast feedback, robustness, and
+real-world validation. Tests are organized into three tiers and augmented with
+property-based tests where appropriate.
+
+- Unit tests (fast, deterministic)
+    - Target individual functions and small helpers in `splurge_typer` (e.g. `String.*`, `DataType` helpers).
+    - Use `pytest` and focused fixtures. These should run in under a few seconds for the whole suite.
+
+- Integration tests (component interaction)
+    - Validate interactions between `String`, `TypeInference`, and `DuckTyping`.
+    - Cover typical workflows like profiling collections and converting datasets.
+
+- End-to-end tests (real-world scenarios)
+    - Located under `tests/e2e/` and exercise example usage from `examples/` to simulate user scenarios.
+    - Ensures the library behaves correctly when used as a whole.
+
+Property testing (Hypothesis)
+- Use Hypothesis to add broad, randomized coverage for parsing and inference logic.
+- Focus areas where permutations and input spaces are large:
+    - `TypeInference.profile_values` (mixtures, incremental checks, all-digit heuristics)
+    - `TypeInference.convert_value` and the `String` conversion helpers
+- Practical constraints:
+    - Hypothesis strategies are intentionally constrained to realistic input domains (e.g. limiting integer ranges, formatting floats with fixed-point) to avoid generating inputs that exercise behavior we intentionally do not support today (for example, treating large integers like times or uncommon scientific notation that our string parser currently rejects).
+    - When a property finds behavior we'd like to change, we either update the library or narrow the strategy depending on intended behavior.
+
+Coverage targets and gating
+- Minimum coverage target: 85% (keeps a practical balance for a small library); current coverage is ~95% after adding Hypothesis tests.
+- Prefer to write small, deterministic tests to cover uncovered branches rather than marking code `# pragma: no cover` unless a branch is intentionally unreachable.
+
+Do we have enough end-to-end and edge-case tests?
+- Current status: The repo contains a comprehensive unit test suite, a small set of integration tests, and end-to-end scenarios under `tests/e2e/` that exercise example workflows. The addition of Hypothesis tests has increased robustness for `TypeInference` and `String` parsing.
+- Gaps to consider:
+    - A few uncovered branches in `splurge_typer/string.py` and `type_inference.py` (listed in the coverage output) should be addressed with focused unit tests that assert specific parsing branches.
+    - More real-world CSV/JSON dataset e2e tests would help validate behavior on messy inputs (missing fields, mixed formats, locale-specific dates).
+    - Consider CI gating: run full tests with coverage on pull requests and run a quick subset (unit + a small Hypothesis smoke set) on push events to provide fast feedback.
+
+How we run tests locally
+- Quick smoke (fast):
+    ```bash
+    # run unit tests only
+    pytest tests/unit -q
+    ```
+
+- Full suite with coverage (use in CI or before releases):
+    ```bash
+    pytest --cov=splurge_typer --cov-report=term-missing
+    ```
+
+- Run only Hypothesis tests (useful when developing strategies):
+    ```bash
+    pytest tests/unit/test_typeinference_hypothesis.py -q
+    ```
+
+Next improvements
+- Add small unit tests targeting the 20-25 missed lines reported by coverage (mostly in `string.py` and a few in `type_inference.py`).
+- Add larger e2e fixtures with representative CSV/JSON datasets to ensure behavior on messy, real-world inputs.
+- Consider adding a nightly CI job that runs the full Hypothesis suite with expanded settings (higher max_examples) to catch flaky edge cases.
+
+
 ## Architecture and Design
 
 ### Design Principles
@@ -310,3 +371,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 *For API documentation and additional examples, see the main README.md file.*
+
+## API Reference
+
+Comprehensive API documentation is available at:
+
+[API Reference](./api/API-REFERENCE.md)
+
+This file contains detailed usage examples, method signatures, and error handling guidance.

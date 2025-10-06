@@ -8,7 +8,6 @@ Please preserve this header and all related material when sharing!
 This module is licensed under the MIT License.
 """
 
-
 from splurge_typer.data_type import DataType
 
 
@@ -31,8 +30,16 @@ class TestDataType:
     def test_data_type_enum_members(self):
         """Test that all expected enum members exist."""
         expected_members = {
-            "STRING", "INTEGER", "FLOAT", "BOOLEAN", "DATE", "TIME",
-            "DATETIME", "MIXED", "EMPTY", "NONE"
+            "STRING",
+            "INTEGER",
+            "FLOAT",
+            "BOOLEAN",
+            "DATE",
+            "TIME",
+            "DATETIME",
+            "MIXED",
+            "EMPTY",
+            "NONE",
         }
         actual_members = {member.name for member in DataType}
         assert actual_members == expected_members

@@ -131,3 +131,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Author
 
 Jim Schilling (c) 2025
+
+## Documentation
+
+Further documentation and detailed usage guides are available in the `docs/` folder:
+
+- Detailed docs: [docs/README-details.md](docs/README-details.md)
+- API reference: [docs/api/API-REFERENCE.md](docs/api/API-REFERENCE.md)

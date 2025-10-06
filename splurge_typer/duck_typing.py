@@ -1,9 +1,8 @@
-"""
-duck_typing module - Provides duck typing utilities for type checking.
+"""Duck typing utilities.
 
-This module offers comprehensive duck typing utilities for determining object
-behavior based on available methods rather than inheritance. Duck typing enables
-more flexible type checking that works with custom objects and third-party classes.
+Utilities for determining object behavior based on method availability rather
+than inheritance. These helpers are used to detect list-like, dict-like and
+iterable behavior across arbitrary objects.
 
 Copyright (c) 2025 Jim Schilling
 
@@ -16,20 +15,11 @@ from typing import Any
 
 
 class DuckTyping:
-    """
-    DuckTyping class - Provides duck typing utilities for flexible type checking.
+    """Utilities for duck-typing checks.
 
-    Duck typing is a dynamic typing style where the suitability of an object
-    is determined by the presence of certain methods and properties, rather
-    than the type of the object itself. This approach is more flexible and
-    works well with custom objects and third-party classes.
-
-    Features:
-    - List-like behavior detection
-    - Dictionary-like behavior detection
-    - Iterability checking
-    - Collection vs string distinction
-    - Unified emptiness checking
+    This class contains only static helpers that detect common behavioral
+    characteristics (list-like, dict-like, iterable, empty) without
+    requiring subclassing or protocol registration.
     """
 
     @staticmethod
@@ -57,7 +47,10 @@ class DuckTyping:
             return True
 
         return bool(
-            hasattr(value, "__iter__") and hasattr(value, "append") and hasattr(value, "remove") and hasattr(value, "index"),
+            hasattr(value, "__iter__")
+            and hasattr(value, "append")
+            and hasattr(value, "remove")
+            and hasattr(value, "index"),
         )
 
     @staticmethod
@@ -113,11 +106,7 @@ class DuckTyping:
             return True
         except TypeError:
             # Check for iterator protocol methods
-            return bool(
-                hasattr(value, "__iter__")
-                or hasattr(value, "__getitem__")
-                or hasattr(value, "__next__")
-            )
+            return bool(hasattr(value, "__iter__") or hasattr(value, "__getitem__") or hasattr(value, "__next__"))
 
     @staticmethod
     def is_iterable_not_string(value: Any) -> bool:

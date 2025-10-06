@@ -19,18 +19,21 @@ from splurge_typer.string import String
 class TestStringIntegerValidation:
     """Test cases for integer validation methods."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("123", True),
-        ("-123", True),
-        ("+123", True),
-        ("0", True),
-        ("00123", True),
-        ("123.45", False),
-        ("abc", False),
-        ("12a3", False),
-        ("", False),
-        ("   ", False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("123", True),
+            ("-123", True),
+            ("+123", True),
+            ("0", True),
+            ("00123", True),
+            ("123.45", False),
+            ("abc", False),
+            ("12a3", False),
+            ("", False),
+            ("   ", False),
+        ],
+    )
     def test_is_int_like(self, value, expected):
         """Test integer-like validation."""
         assert String.is_int_like(value) == expected
@@ -52,20 +55,23 @@ class TestStringIntegerValidation:
 class TestStringFloatValidation:
     """Test cases for float validation methods."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("123.45", True),
-        ("-123.45", True),
-        ("+123.45", True),
-        ("123", True),  # Integers are also floats
-        ("0.0", True),
-        ("00123.4500", True),
-        (".5", True),
-        ("5.", True),
-        ("abc", False),
-        ("12a3.45", False),
-        ("", False),
-        ("   ", False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("123.45", True),
+            ("-123.45", True),
+            ("+123.45", True),
+            ("123", True),  # Integers are also floats
+            ("0.0", True),
+            ("00123.4500", True),
+            (".5", True),
+            ("5.", True),
+            ("abc", False),
+            ("12a3.45", False),
+            ("", False),
+            ("   ", False),
+        ],
+    )
     def test_is_float_like(self, value, expected):
         """Test float-like validation."""
         assert String.is_float_like(value) == expected
@@ -86,36 +92,42 @@ class TestStringFloatValidation:
 class TestStringBooleanValidation:
     """Test cases for boolean validation methods."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("true", True),
-        ("True", True),
-        ("TRUE", True),
-        ("false", True),
-        ("False", True),
-        ("FALSE", True),
-        ("yes", True),
-        ("no", True),
-        ("1", False),
-        ("0", False),
-        ("abc", False),
-        ("123", False),
-        ("", False),
-        ("   ", False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("true", True),
+            ("True", True),
+            ("TRUE", True),
+            ("false", True),
+            ("False", True),
+            ("FALSE", True),
+            ("yes", True),
+            ("no", True),
+            ("1", False),
+            ("0", False),
+            ("abc", False),
+            ("123", False),
+            ("", False),
+            ("   ", False),
+        ],
+    )
     def test_is_bool_like(self, value, expected):
         """Test boolean-like validation."""
         assert String.is_bool_like(value) == expected
 
-    @pytest.mark.parametrize("value,expected", [
-        ("true", True),
-        ("True", True),
-        ("TRUE", True),
-        ("yes", True),
-        ("false", False),
-        ("False", False),
-        ("FALSE", False),
-        ("no", False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("true", True),
+            ("True", True),
+            ("TRUE", True),
+            ("yes", True),
+            ("false", False),
+            ("False", False),
+            ("FALSE", False),
+            ("no", False),
+        ],
+    )
     def test_to_bool(self, value, expected):
         """Test converting string to boolean."""
         assert String.to_bool(value) == expected
@@ -131,20 +143,23 @@ class TestStringBooleanValidation:
 class TestStringDateValidation:
     """Test cases for date validation methods."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("2023-01-01", True),
-        ("2023/01/01", True),
-        ("2023.01.01", True),
-        ("20230101", True),
-        ("01-01-2023", True),
-        ("01/01/2023", True),
-        ("01.01.2023", True),
-        ("01012023", True),
-        ("2023-02-30", False),  # Invalid date
-        ("abc", False),
-        ("", False),
-        ("   ", False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("2023-01-01", True),
+            ("2023/01/01", True),
+            ("2023.01.01", True),
+            ("20230101", True),
+            ("01-01-2023", True),
+            ("01/01/2023", True),
+            ("01.01.2023", True),
+            ("01012023", True),
+            ("2023-02-30", False),  # Invalid date
+            ("abc", False),
+            ("", False),
+            ("   ", False),
+        ],
+    )
     def test_is_date_like(self, value, expected):
         """Test date-like validation."""
         assert String.is_date_like(value) == expected
@@ -167,15 +182,18 @@ class TestStringDateValidation:
 class TestStringTimeValidation:
     """Test cases for time validation methods."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("14:30:00", True),
-        ("2:30 PM", True),
-        ("14:30", True),
-        ("143000", True),
-        ("abc", False),
-        ("", False),
-        ("   ", False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("14:30:00", True),
+            ("2:30 PM", True),
+            ("14:30", True),
+            ("143000", True),
+            ("abc", False),
+            ("", False),
+            ("   ", False),
+        ],
+    )
     def test_is_time_like(self, value, expected):
         """Test time-like validation."""
         assert String.is_time_like(value) == expected
@@ -198,29 +216,30 @@ class TestStringTimeValidation:
 class TestStringDatetimeValidation:
     """Test cases for datetime validation methods."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # Test both T and space separators
-        ("2023-01-01T12:00:00", True),  # T separator
-        ("2023-01-01 12:00:00", True),  # Space separator
-        ("2023-12-25T14:30:00", True),  # T separator
-        ("2023-12-25 14:30:00", True),  # Space separator
-        ("2025-01-01T00:00:00", True),  # T separator
-        ("2025-01-01 00:00:00", True),  # Space separator
-
-        # Different date formats with both separators
-        ("2023/01/01T12:00:00", True),   # T separator with slashes
-        ("2023/01/01 12:00:00", True),   # Space separator with slashes
-        ("2023.01.01T12:00:00", True),   # T separator with dots
-        ("2023.01.01 12:00:00", True),   # Space separator with dots
-
-        # Invalid formats
-        ("01/01/2023 12:00:00", True),   # MM/DD/YYYY format is supported
-        ("abc", False),
-        ("", False),
-        ("   ", False),
-        ("2023-01-01", False),  # Date only, no time
-        ("12:00:00", False),    # Time only, no date
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Test both T and space separators
+            ("2023-01-01T12:00:00", True),  # T separator
+            ("2023-01-01 12:00:00", True),  # Space separator
+            ("2023-12-25T14:30:00", True),  # T separator
+            ("2023-12-25 14:30:00", True),  # Space separator
+            ("2025-01-01T00:00:00", True),  # T separator
+            ("2025-01-01 00:00:00", True),  # Space separator
+            # Different date formats with both separators
+            ("2023/01/01T12:00:00", True),  # T separator with slashes
+            ("2023/01/01 12:00:00", True),  # Space separator with slashes
+            ("2023.01.01T12:00:00", True),  # T separator with dots
+            ("2023.01.01 12:00:00", True),  # Space separator with dots
+            # Invalid formats
+            ("01/01/2023 12:00:00", True),  # MM/DD/YYYY format is supported
+            ("abc", False),
+            ("", False),
+            ("   ", False),
+            ("2023-01-01", False),  # Date only, no time
+            ("12:00:00", False),  # Time only, no date
+        ],
+    )
     def test_is_datetime_like(self, value, expected):
         """Test datetime-like validation."""
         assert String.is_datetime_like(value) == expected
@@ -263,19 +282,22 @@ class TestStringDatetimeValidation:
 class TestStringTypeInference:
     """Test cases for type inference."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("123", DataType.INTEGER),
-        ("123.45", DataType.FLOAT),
-        ("true", DataType.BOOLEAN),
-        ("2023-01-01", DataType.DATE),
-        ("14:30:00", DataType.TIME),
-        ("2023-01-01T12:00:00", DataType.DATETIME),  # T separator
-        ("2023-01-01 12:00:00", DataType.DATETIME),  # Space separator
-        ("hello", DataType.STRING),
-        ("", DataType.EMPTY),
-        ("none", DataType.NONE),
-        ("null", DataType.NONE),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("123", DataType.INTEGER),
+            ("123.45", DataType.FLOAT),
+            ("true", DataType.BOOLEAN),
+            ("2023-01-01", DataType.DATE),
+            ("14:30:00", DataType.TIME),
+            ("2023-01-01T12:00:00", DataType.DATETIME),  # T separator
+            ("2023-01-01 12:00:00", DataType.DATETIME),  # Space separator
+            ("hello", DataType.STRING),
+            ("", DataType.EMPTY),
+            ("none", DataType.NONE),
+            ("null", DataType.NONE),
+        ],
+    )
     def test_infer_type(self, value, expected):
         """Test type inference for various inputs."""
         assert String.infer_type(value) == expected
@@ -284,28 +306,28 @@ class TestStringTypeInference:
 class TestStringIsNoneLike:
     """Test cases for is_none_like method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # None values
-        ("none", True),
-        ("null", True),
-        ("None", True),
-        ("NULL", True),
-        ("NONE", True),
-
-        # Non-none values
-        ("something", False),
-        ("", False),
-        ("123", False),
-        ("true", False),
-
-        # None type
-        (None, True),
-
-        # Other types
-        (123, False),
-        (True, False),
-        ([], False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # None values
+            ("none", True),
+            ("null", True),
+            ("None", True),
+            ("NULL", True),
+            ("NONE", True),
+            # Non-none values
+            ("something", False),
+            ("", False),
+            ("123", False),
+            ("true", False),
+            # None type
+            (None, True),
+            # Other types
+            (123, False),
+            (True, False),
+            ([], False),
+        ],
+    )
     def test_is_none_like(self, value, expected):
         """Test is_none_like method with various inputs."""
         assert String.is_none_like(value) == expected
@@ -320,27 +342,27 @@ class TestStringIsNoneLike:
 class TestStringIsEmptyLike:
     """Test cases for is_empty_like method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # Empty strings
-        ("", True),
-        ("   ", True),  # whitespace
-        ("\t\n", True),  # tabs/newlines
-
-        # Non-empty strings
-        ("abc", False),
-        ("  abc  ", False),
-
-        # None
-        (None, False),
-
-        # Other types (non-strings return False)
-        (123, False),
-        (True, False),
-        ([], False),  # empty list - not a string
-        ([1, 2, 3], False),  # non-empty list - not a string
-        ({}, False),  # empty dict - not a string
-        ({"a": 1}, False),  # non-empty dict - not a string
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Empty strings
+            ("", True),
+            ("   ", True),  # whitespace
+            ("\t\n", True),  # tabs/newlines
+            # Non-empty strings
+            ("abc", False),
+            ("  abc  ", False),
+            # None
+            (None, False),
+            # Other types (non-strings return False)
+            (123, False),
+            (True, False),
+            ([], False),  # empty list - not a string
+            ([1, 2, 3], False),  # non-empty list - not a string
+            ({}, False),  # empty dict - not a string
+            ({"a": 1}, False),  # non-empty dict - not a string
+        ],
+    )
     def test_is_empty_like(self, value, expected):
         """Test is_empty_like method with various inputs."""
         assert String.is_empty_like(value) == expected
@@ -355,37 +377,35 @@ class TestStringIsEmptyLike:
 class TestStringIsNumericLike:
     """Test cases for is_numeric_like method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # Integers
-        ("123", True),
-        ("-123", True),
-        ("+123", True),
-
-        # Floats
-        ("123.45", True),
-        ("-123.45", True),
-        ("+123.45", True),
-        (".123", True),
-        ("123.", True),
-
-        # Scientific notation (not currently supported)
-        ("1.23e10", False),
-        ("1.23E-5", False),
-
-        # Non-numeric strings
-        ("abc", False),
-        ("12a34", False),
-        ("", False),
-        ("   ", False),
-
-        # None
-        (None, False),
-
-        # Other types
-        (123, True),  # int is numeric
-        (123.45, True),  # float is numeric
-        (True, True),  # bool is subclass of int
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Integers
+            ("123", True),
+            ("-123", True),
+            ("+123", True),
+            # Floats
+            ("123.45", True),
+            ("-123.45", True),
+            ("+123.45", True),
+            (".123", True),
+            ("123.", True),
+            # Scientific notation (not currently supported)
+            ("1.23e10", False),
+            ("1.23E-5", False),
+            # Non-numeric strings
+            ("abc", False),
+            ("12a34", False),
+            ("", False),
+            ("   ", False),
+            # None
+            (None, False),
+            # Other types
+            (123, True),  # int is numeric
+            (123.45, True),  # float is numeric
+            (True, True),  # bool is subclass of int
+        ],
+    )
     def test_is_numeric_like(self, value, expected):
         """Test is_numeric_like method with various inputs."""
         assert String.is_numeric_like(value) == expected
@@ -394,31 +414,31 @@ class TestStringIsNumericLike:
 class TestStringIsCategoryLike:
     """Test cases for is_category_like method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # Category-like strings
-        ("category", True),
-        ("Category", True),
-        ("CATEGORY", True),
-        ("cat_123", True),
-        ("cat-123", True),
-        ("my_category", True),
-
-        # Non-category strings
-        ("123", False),
-        ("123.45", False),
-        ("", True),  # Empty string is non-numeric, so category-like
-        ("   ", True),  # Whitespace-only is non-numeric, so category-like
-        ("true", True),  # "true" is not numeric, so category-like
-        ("false", True),  # "false" is not numeric, so category-like
-        ("none", True),  # "none" is non-numeric, so category-like
-
-        # None
-        (None, False),
-
-        # Other types
-        (123, False),
-        (True, False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Category-like strings
+            ("category", True),
+            ("Category", True),
+            ("CATEGORY", True),
+            ("cat_123", True),
+            ("cat-123", True),
+            ("my_category", True),
+            # Non-category strings
+            ("123", False),
+            ("123.45", False),
+            ("", True),  # Empty string is non-numeric, so category-like
+            ("   ", True),  # Whitespace-only is non-numeric, so category-like
+            ("true", True),  # "true" is not numeric, so category-like
+            ("false", True),  # "false" is not numeric, so category-like
+            ("none", True),  # "none" is non-numeric, so category-like
+            # None
+            (None, False),
+            # Other types
+            (123, False),
+            (True, False),
+        ],
+    )
     def test_is_category_like(self, value, expected):
         """Test is_category_like method with various inputs."""
         assert String.is_category_like(value) == expected
@@ -427,29 +447,29 @@ class TestStringIsCategoryLike:
 class TestStringHasLeadingZero:
     """Test cases for has_leading_zero method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # Numbers with leading zeros
-        ("0123", True),
-        ("00123", True),
-        ("000", True),
-        ("0123.45", True),
-        ("00123.45", True),
-
-        # Numbers without leading zeros
-        ("123", False),
-        ("123.45", False),
-        ("0", True),  # Single zero starts with 0
-        ("0.123", True),  # Zero before decimal starts with 0
-
-        # Non-numeric strings
-        ("abc", False),
-        ("", False),
-        ("   ", False),
-        ("true", False),
-
-        # None
-        (None, False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Numbers with leading zeros
+            ("0123", True),
+            ("00123", True),
+            ("000", True),
+            ("0123.45", True),
+            ("00123.45", True),
+            # Numbers without leading zeros
+            ("123", False),
+            ("123.45", False),
+            ("0", True),  # Single zero starts with 0
+            ("0.123", True),  # Zero before decimal starts with 0
+            # Non-numeric strings
+            ("abc", False),
+            ("", False),
+            ("   ", False),
+            ("true", False),
+            # None
+            (None, False),
+        ],
+    )
     def test_has_leading_zero(self, value, expected):
         """Test has_leading_zero method with various inputs."""
         assert String.has_leading_zero(value) == expected
@@ -458,28 +478,29 @@ class TestStringHasLeadingZero:
 class TestStringInferTypeName:
     """Test cases for infer_type_name method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # Basic types
-        ("123", "INTEGER"),
-        ("123.45", "FLOAT"),
-        ("true", "BOOLEAN"),
-        ("2023-01-01", "DATE"),
-        ("14:30:00", "TIME"),
-        ("2023-01-01T12:00:00", "DATETIME"),   # T separator
-        ("2023-01-01 12:00:00", "DATETIME"),   # Space separator
-        ("hello", "STRING"),
-        ("", "EMPTY"),
-        ("none", "NONE"),
-
-        # Edge cases
-        ("   ", "EMPTY"),  # whitespace
-        ("  123  ", "INTEGER"),  # with whitespace
-        ("TRUE", "BOOLEAN"),  # uppercase
-        ("2023/01/01", "DATE"),  # different format
-
-        # None input
-        (None, "NONE"),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Basic types
+            ("123", "INTEGER"),
+            ("123.45", "FLOAT"),
+            ("true", "BOOLEAN"),
+            ("2023-01-01", "DATE"),
+            ("14:30:00", "TIME"),
+            ("2023-01-01T12:00:00", "DATETIME"),  # T separator
+            ("2023-01-01 12:00:00", "DATETIME"),  # Space separator
+            ("hello", "STRING"),
+            ("", "EMPTY"),
+            ("none", "NONE"),
+            # Edge cases
+            ("   ", "EMPTY"),  # whitespace
+            ("  123  ", "INTEGER"),  # with whitespace
+            ("TRUE", "BOOLEAN"),  # uppercase
+            ("2023/01/01", "DATE"),  # different format
+            # None input
+            (None, "NONE"),
+        ],
+    )
     def test_infer_type_name(self, value, expected):
         """Test infer_type_name method with various inputs."""
         assert String.infer_type_name(value) == expected
@@ -518,7 +539,6 @@ class TestStringEdgeCases:
         assert String.is_bool_like("yes please") is False
         assert String.is_bool_like("not false") is False
 
-
     def test_infer_type_with_whitespace(self):
         """Test infer_type with whitespace handling."""
         assert String.infer_type("  123  ") == DataType.INTEGER
@@ -530,52 +550,48 @@ class TestStringEdgeCases:
 class TestStringNativeObjectsAndStrings:
     """Test all data types as both native Python objects and string representations."""
 
-    @pytest.mark.parametrize("native_obj,string_repr,expected_type", [
-        # INTEGER
-        (123, "123", DataType.INTEGER),
-        (-456, "-456", DataType.INTEGER),
-        (0, "0", DataType.INTEGER),
-
-        # FLOAT
-        (123.45, "123.45", DataType.FLOAT),
-        (-67.89, "-67.89", DataType.FLOAT),
-        (0.0, "0.0", DataType.FLOAT),
-        (.5, ".5", DataType.FLOAT),
-        (5., "5.", DataType.FLOAT),
-
-        # BOOLEAN
-        (True, "true", DataType.BOOLEAN),
-        (False, "false", DataType.BOOLEAN),
-        (True, "TRUE", DataType.BOOLEAN),
-        (False, "FALSE", DataType.BOOLEAN),
-
-        # DATE
-        (date(2023, 12, 25), "2023-12-25", DataType.DATE),
-        (date(2025, 1, 1), "2025-01-01", DataType.DATE),
-        (date(1999, 12, 31), "1999-12-31", DataType.DATE),
-
-        # TIME
-        (time(14, 30, 0), "14:30:00", DataType.TIME),
-        (time(9, 15, 30), "09:15:30", DataType.TIME),
-        (time(23, 59, 59), "23:59:59", DataType.TIME),
-
-        # DATETIME - test both T and space separators
-        (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25T14:30:00", DataType.DATETIME),  # T separator
-        (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25 14:30:00", DataType.DATETIME),  # Space separator
-        (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01T00:00:00", DataType.DATETIME),      # T separator
-        (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01 00:00:00", DataType.DATETIME),      # Space separator
-        (datetime(1999, 12, 31, 23, 59, 59), "1999-12-31T23:59:59", DataType.DATETIME),  # T separator
-        (datetime(1999, 12, 31, 23, 59, 59), "1999-12-31 23:59:59", DataType.DATETIME),  # Space separator
-
-        # NONE
-        (None, "none", DataType.NONE),
-        (None, "null", DataType.NONE),
-        (None, "None", DataType.NONE),
-
-        # EMPTY
-        ("", "", DataType.EMPTY),
-        ("   ", "   ", DataType.EMPTY),
-    ])
+    @pytest.mark.parametrize(
+        "native_obj,string_repr,expected_type",
+        [
+            # INTEGER
+            (123, "123", DataType.INTEGER),
+            (-456, "-456", DataType.INTEGER),
+            (0, "0", DataType.INTEGER),
+            # FLOAT
+            (123.45, "123.45", DataType.FLOAT),
+            (-67.89, "-67.89", DataType.FLOAT),
+            (0.0, "0.0", DataType.FLOAT),
+            (0.5, ".5", DataType.FLOAT),
+            (5.0, "5.", DataType.FLOAT),
+            # BOOLEAN
+            (True, "true", DataType.BOOLEAN),
+            (False, "false", DataType.BOOLEAN),
+            (True, "TRUE", DataType.BOOLEAN),
+            (False, "FALSE", DataType.BOOLEAN),
+            # DATE
+            (date(2023, 12, 25), "2023-12-25", DataType.DATE),
+            (date(2025, 1, 1), "2025-01-01", DataType.DATE),
+            (date(1999, 12, 31), "1999-12-31", DataType.DATE),
+            # TIME
+            (time(14, 30, 0), "14:30:00", DataType.TIME),
+            (time(9, 15, 30), "09:15:30", DataType.TIME),
+            (time(23, 59, 59), "23:59:59", DataType.TIME),
+            # DATETIME - test both T and space separators
+            (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25T14:30:00", DataType.DATETIME),  # T separator
+            (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25 14:30:00", DataType.DATETIME),  # Space separator
+            (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01T00:00:00", DataType.DATETIME),  # T separator
+            (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01 00:00:00", DataType.DATETIME),  # Space separator
+            (datetime(1999, 12, 31, 23, 59, 59), "1999-12-31T23:59:59", DataType.DATETIME),  # T separator
+            (datetime(1999, 12, 31, 23, 59, 59), "1999-12-31 23:59:59", DataType.DATETIME),  # Space separator
+            # NONE
+            (None, "none", DataType.NONE),
+            (None, "null", DataType.NONE),
+            (None, "None", DataType.NONE),
+            # EMPTY
+            ("", "", DataType.EMPTY),
+            ("   ", "   ", DataType.EMPTY),
+        ],
+    )
     def test_native_objects_vs_strings(self, native_obj, string_repr, expected_type):
         """Test that native objects and their string representations infer the same type."""
         # Test string representation
@@ -599,25 +615,32 @@ class TestStringNativeObjectsAndStrings:
                 native_as_string = str(native_obj).lower()
 
             native_result = String.infer_type(native_as_string)
-            assert native_result == expected_type, f"Native object {native_obj} (as '{native_as_string}') should be {expected_type}"
+            assert native_result == expected_type, (
+                f"Native object {native_obj} (as '{native_as_string}') should be {expected_type}"
+            )
 
             # Also test String.infer_type() with the native object directly
             # (skip None and empty strings since they're handled as special cases)
             if native_obj is not None and native_obj != "":
                 direct_native_result = String.infer_type(native_obj)
-                assert direct_native_result == expected_type, f"Native object {native_obj} should directly infer as {expected_type}"
+                assert direct_native_result == expected_type, (
+                    f"Native object {native_obj} should directly infer as {expected_type}"
+                )
 
-    @pytest.mark.parametrize("native_obj,string_repr,method_name", [
-        # Test validation methods with native objects
-        (123, "123", "is_int_like"),
-        (123.45, "123.45", "is_float_like"),
-        (True, "true", "is_bool_like"),
-        (False, "false", "is_bool_like"),
-        (date(2023, 12, 25), "2023-12-25", "is_date_like"),
-        (time(14, 30, 0), "14:30:00", "is_time_like"),
-        (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25T14:30:00", "is_datetime_like"),   # T separator
-        (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25 14:30:00", "is_datetime_like"),   # Space separator
-    ])
+    @pytest.mark.parametrize(
+        "native_obj,string_repr,method_name",
+        [
+            # Test validation methods with native objects
+            (123, "123", "is_int_like"),
+            (123.45, "123.45", "is_float_like"),
+            (True, "true", "is_bool_like"),
+            (False, "false", "is_bool_like"),
+            (date(2023, 12, 25), "2023-12-25", "is_date_like"),
+            (time(14, 30, 0), "14:30:00", "is_time_like"),
+            (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25T14:30:00", "is_datetime_like"),  # T separator
+            (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25 14:30:00", "is_datetime_like"),  # Space separator
+        ],
+    )
     def test_validation_methods_native_vs_string(self, native_obj, string_repr, method_name):
         """Test that validation methods work for both native objects and strings."""
         method = getattr(String, method_name)
@@ -638,19 +661,24 @@ class TestStringNativeObjectsAndStrings:
 
         # Some methods expect specific formats, so we only test the string representation
         # that matches what the method expects
-        if native_str == string_repr or (isinstance(native_obj, bool) and string_repr in [str(native_obj).lower(), str(native_obj)]):
+        if native_str == string_repr or (
+            isinstance(native_obj, bool) and string_repr in [str(native_obj).lower(), str(native_obj)]
+        ):
             native_result = method(string_repr)
             assert native_result is True, f"Method {method_name} should return True for '{string_repr}'"
 
-    @pytest.mark.parametrize("native_obj,string_repr", [
-        # Test conversion methods with both T and space separators
-        (date(2023, 12, 25), "2023-12-25"),
-        (time(14, 30, 0), "14:30:00"),
-        (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25T14:30:00"),   # T separator
-        (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25 14:30:00"),   # Space separator
-        (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01T00:00:00"),        # T separator
-        (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01 00:00:00"),        # Space separator
-    ])
+    @pytest.mark.parametrize(
+        "native_obj,string_repr",
+        [
+            # Test conversion methods with both T and space separators
+            (date(2023, 12, 25), "2023-12-25"),
+            (time(14, 30, 0), "14:30:00"),
+            (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25T14:30:00"),  # T separator
+            (datetime(2023, 12, 25, 14, 30, 0), "2023-12-25 14:30:00"),  # Space separator
+            (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01T00:00:00"),  # T separator
+            (datetime(2025, 1, 1, 0, 0, 0), "2025-01-01 00:00:00"),  # Space separator
+        ],
+    )
     def test_conversion_methods(self, native_obj, string_repr):
         """Test that conversion methods work correctly."""
         if isinstance(native_obj, date) and not isinstance(native_obj, datetime):
@@ -770,8 +798,8 @@ class TestStringInferTypeNativeObjects:
         assert String.infer_type(123.45) == DataType.FLOAT
         assert String.infer_type(-67.89) == DataType.FLOAT
         assert String.infer_type(0.0) == DataType.FLOAT
-        assert String.infer_type(.5) == DataType.FLOAT
-        assert String.infer_type(5.) == DataType.FLOAT
+        assert String.infer_type(0.5) == DataType.FLOAT
+        assert String.infer_type(5.0) == DataType.FLOAT
 
     def test_infer_type_with_native_bool(self):
         """Test String.infer_type() with native bool objects."""
@@ -813,8 +841,8 @@ class TestStringInferTypeNativeObjects:
         assert String.infer_type("true") == DataType.BOOLEAN
         assert String.infer_type("2023-12-25") == DataType.DATE
         assert String.infer_type("14:30:00") == DataType.TIME
-        assert String.infer_type("2023-12-25T14:30:00") == DataType.DATETIME   # T separator
-        assert String.infer_type("2023-12-25 14:30:00") == DataType.DATETIME   # Space separator
+        assert String.infer_type("2023-12-25T14:30:00") == DataType.DATETIME  # T separator
+        assert String.infer_type("2023-12-25 14:30:00") == DataType.DATETIME  # Space separator
         assert String.infer_type("hello") == DataType.STRING
         assert String.infer_type("") == DataType.EMPTY
         assert String.infer_type("none") == DataType.NONE
