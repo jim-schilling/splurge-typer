@@ -1,12 +1,8 @@
-"""
-string module - Provides utilities for type checking, conversion and inference
+"""String utilities for inference and conversion.
 
-This module offers a comprehensive set of tools for:
-- Type inference and validation
-- Data type conversion
-- String parsing and validation
-- Collection type checking
-- Value profiling and analysis
+This module provides helpers for detecting and converting values represented
+as strings. It offers extensive support for numeric, boolean, date/time, and
+other common patterns.
 
 Copyright (c) 2025 Jim Schilling
 
@@ -63,47 +59,47 @@ class String:
     ]
 
     _DATETIME_PATTERNS: list[str] = [
-        "%Y-%m-%dT%H:%M:%S",      # T separator
-        "%Y-%m-%d %H:%M:%S",      # Space separator
-        "%Y/%m/%dT%H:%M:%S",      # T separator
-        "%Y/%m/%d %H:%M:%S",      # Space separator
-        "%Y.%m.%dT%H:%M:%S",      # T separator
-        "%Y.%m.%d %H:%M:%S",      # Space separator
+        "%Y-%m-%dT%H:%M:%S",  # T separator
+        "%Y-%m-%d %H:%M:%S",  # Space separator
+        "%Y/%m/%dT%H:%M:%S",  # T separator
+        "%Y/%m/%d %H:%M:%S",  # Space separator
+        "%Y.%m.%dT%H:%M:%S",  # T separator
+        "%Y.%m.%d %H:%M:%S",  # Space separator
         "%Y%m%d%H%M%S",
-        "%Y-%d-%mT%H:%M:%S",      # T separator
-        "%Y-%d-%m %H:%M:%S",      # Space separator
-        "%Y/%d/%mT%H:%M:%S",      # T separator
-        "%Y/%d/%m %H:%M:%S",      # Space separator
-        "%Y.%d.%mT%H:%M:%S",      # T separator
-        "%Y.%d.%m %H:%M:%S",      # Space separator
+        "%Y-%d-%mT%H:%M:%S",  # T separator
+        "%Y-%d-%m %H:%M:%S",  # Space separator
+        "%Y/%d/%mT%H:%M:%S",  # T separator
+        "%Y/%d/%m %H:%M:%S",  # Space separator
+        "%Y.%d.%mT%H:%M:%S",  # T separator
+        "%Y.%d.%m %H:%M:%S",  # Space separator
         "%Y%d%m%H%M%S",
-        "%m-%d-%YT%H:%M:%S",      # T separator
-        "%m-%d-%Y %H:%M:%S",      # Space separator
-        "%m/%d/%YT%H:%M:%S",      # T separator
-        "%m/%d/%Y %H:%M:%S",      # Space separator
-        "%m.%d.%YT%H:%M:%S",      # T separator
-        "%m.%d.%Y %H:%M:%S",      # Space separator
+        "%m-%d-%YT%H:%M:%S",  # T separator
+        "%m-%d-%Y %H:%M:%S",  # Space separator
+        "%m/%d/%YT%H:%M:%S",  # T separator
+        "%m/%d/%Y %H:%M:%S",  # Space separator
+        "%m.%d.%YT%H:%M:%S",  # T separator
+        "%m.%d.%Y %H:%M:%S",  # Space separator
         "%m%d%Y%H%M%S",
-        "%Y-%m-%dT%H:%M:%S.%f",   # T separator
-        "%Y-%m-%d %H:%M:%S.%f",   # Space separator
-        "%Y/%m/%dT%H:%M:%S.%f",   # T separator
-        "%Y/%m/%d %H:%M:%S.%f",   # Space separator
-        "%Y.%m.%dT%H:%M:%S.%f",   # T separator
-        "%Y.%m.%d %H:%M:%S.%f",   # Space separator
+        "%Y-%m-%dT%H:%M:%S.%f",  # T separator
+        "%Y-%m-%d %H:%M:%S.%f",  # Space separator
+        "%Y/%m/%dT%H:%M:%S.%f",  # T separator
+        "%Y/%m/%d %H:%M:%S.%f",  # Space separator
+        "%Y.%m.%dT%H:%M:%S.%f",  # T separator
+        "%Y.%m.%d %H:%M:%S.%f",  # Space separator
         "%Y%m%d%H%M%S%f",
-        "%Y-%d-%mT%H:%M:%S.%f",   # T separator
-        "%Y-%d-%m %H:%M:%S.%f",   # Space separator
-        "%Y/%d/%mT%H:%M:%S.%f",   # T separator
-        "%Y/%d/%m %H:%M:%S.%f",   # Space separator
-        "%Y.%d.%mT%H:%M:%S.%f",   # T separator
-        "%Y.%d.%m %H:%M:%S.%f",   # Space separator
+        "%Y-%d-%mT%H:%M:%S.%f",  # T separator
+        "%Y-%d-%m %H:%M:%S.%f",  # Space separator
+        "%Y/%d/%mT%H:%M:%S.%f",  # T separator
+        "%Y/%d/%m %H:%M:%S.%f",  # Space separator
+        "%Y.%d.%mT%H:%M:%S.%f",  # T separator
+        "%Y.%d.%m %H:%M:%S.%f",  # Space separator
         "%Y%d%m%H%M%S%f",
-        "%m-%d-%YT%H:%M:%S.%f",   # T separator
-        "%m-%d-%Y %H:%M:%S.%f",   # Space separator
-        "%m/%d/%YT%H:%M:%S.%f",   # T separator
-        "%m/%d/%Y %H:%M:%S.%f",   # Space separator
-        "%m.%d.%YT%H:%M:%S.%f",   # T separator
-        "%m.%d.%Y %H:%M:%S.%f",   # Space separator
+        "%m-%d-%YT%H:%M:%S.%f",  # T separator
+        "%m-%d-%Y %H:%M:%S.%f",  # Space separator
+        "%m/%d/%YT%H:%M:%S.%f",  # T separator
+        "%m/%d/%Y %H:%M:%S.%f",  # Space separator
+        "%m.%d.%YT%H:%M:%S.%f",  # T separator
+        "%m.%d.%Y %H:%M:%S.%f",  # Space separator
         "%m%d%Y%H%M%S%f",
     ]
 
@@ -121,7 +117,7 @@ class String:
     _TIME_24HOUR_REGEX = re.compile(r"""^(\d{1,2}):(\d{2})(:(\d{2})([.](\d+))?)?$""")
     _TIME_12HOUR_REGEX = re.compile(r"""^(\d{1,2}):(\d{2})(:(\d{2})([.](\d+))?)?\s*(AM|PM|am|pm)$""")
     _TIME_COMPACT_REGEX = re.compile(r"""^(\d{2})(\d{2})(\d{2})?$""")
-   
+
     @classmethod
     def is_bool_like(
         cls,

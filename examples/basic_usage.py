@@ -116,7 +116,7 @@ def main():
         "age": "30",
         "balance": "1234.56",
         "is_active": "true",
-        "last_login": "2023-12-01T10:30:00"
+        "last_login": "2023-12-01T10:30:00",
     }
 
     print("    Original JSON-like data:")

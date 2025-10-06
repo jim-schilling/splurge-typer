@@ -55,10 +55,7 @@ class TestEndToEndScenarios:
 
         # Convert sample row
         converted_row1 = [ti.convert_value(val) for val in row1]
-        expected_row1 = [
-            1, "John Doe", 30, 50000.00, True,
-            date(2020, 1, 15)
-        ]
+        expected_row1 = [1, "John Doe", 30, 50000.00, True, date(2020, 1, 15)]
         assert converted_row1 == expected_row1
 
     def test_json_data_processing_scenario(self):
@@ -74,7 +71,7 @@ class TestEndToEndScenarios:
                     "age": "28",
                     "balance": "1234.56",
                     "is_active": "true",
-                    "last_login": "2023-12-01T10:30:00"
+                    "last_login": "2023-12-01T10:30:00",
                 },
                 {
                     "id": "2",
@@ -82,8 +79,8 @@ class TestEndToEndScenarios:
                     "age": "34",
                     "balance": "789.12",
                     "is_active": "false",
-                    "last_login": "2023-11-15T14:20:00"
-                }
+                    "last_login": "2023-11-15T14:20:00",
+                },
             ]
         }
 
@@ -119,16 +116,16 @@ class TestEndToEndScenarios:
 
         # Simulate messy real-world data
         messy_data = [
-            "123",      # Valid integer
+            "123",  # Valid integer
             "  456  ",  # Integer with whitespace
-            "789.12",   # Valid float
-            "abc",      # Invalid - string
-            "",         # Empty
-            "   ",      # Whitespace only
-            "true",     # Valid boolean
+            "789.12",  # Valid float
+            "abc",  # Invalid - string
+            "",  # Empty
+            "   ",  # Whitespace only
+            "true",  # Valid boolean
             "2023-01-01",  # Valid date
             "not-a-date",  # Invalid date
-            "25:00:00",    # Invalid time (hour > 24)
+            "25:00:00",  # Invalid time (hour > 24)
         ]
 
         # Analyze data quality
@@ -139,11 +136,11 @@ class TestEndToEndScenarios:
 
         # Check type distribution
         assert type_counts.get(DataType.INTEGER, 0) == 2  # "123", "  456  "
-        assert type_counts.get(DataType.FLOAT, 0) == 1    # "789.12"
-        assert type_counts.get(DataType.STRING, 0) == 3   # "abc", "not-a-date", "25:00:00"
-        assert type_counts.get(DataType.EMPTY, 0) == 2    # "", "   "
+        assert type_counts.get(DataType.FLOAT, 0) == 1  # "789.12"
+        assert type_counts.get(DataType.STRING, 0) == 3  # "abc", "not-a-date", "25:00:00"
+        assert type_counts.get(DataType.EMPTY, 0) == 2  # "", "   "
         assert type_counts.get(DataType.BOOLEAN, 0) == 1  # "true"
-        assert type_counts.get(DataType.DATE, 0) == 1     # "2023-01-01"
+        assert type_counts.get(DataType.DATE, 0) == 1  # "2023-01-01"
 
         # Invalid time should be string
         assert ti.infer_type("25:00:00") == DataType.STRING

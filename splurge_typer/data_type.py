@@ -1,5 +1,7 @@
-"""
-data_type module - Provides enumeration of supported data types
+"""Data type enumeration.
+
+This module defines the :class:`DataType` enum which lists the supported data
+types used throughout the package for inference and conversion.
 
 Copyright (c) 2025 Jim Schilling
 
@@ -12,20 +14,19 @@ from enum import Enum
 
 
 class DataType(Enum):
-    """
-    Enumeration of supported data types for type inference and conversion.
+    """Enumeration of supported data types.
 
-    This enum defines the core data types that can be inferred and converted:
-    - STRING: Text data
-    - INTEGER: Whole numbers
-    - FLOAT: Decimal numbers
-    - BOOLEAN: True/False values
-    - DATE: Calendar dates
-    - TIME: Time values
-    - DATETIME: Combined date and time
-    - MIXED: Multiple types in collection
-    - EMPTY: Empty values
-    - NONE: Null/None values
+    Attributes:
+        STRING: Text data.
+        INTEGER: Whole numbers.
+        FLOAT: Decimal numbers.
+        BOOLEAN: True/False values.
+        DATE: Calendar dates.
+        TIME: Time values.
+        DATETIME: Combined date and time.
+        MIXED: Multiple types in a collection.
+        EMPTY: Empty values.
+        NONE: Null/None values.
     """
 
     STRING = "str"

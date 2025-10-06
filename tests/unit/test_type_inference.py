@@ -13,20 +13,24 @@ from datetime import date, datetime, time
 import pytest
 
 from splurge_typer.data_type import DataType
+from splurge_typer.exceptions import SplurgeTyperValueError
 from splurge_typer.type_inference import TypeInference
 
 
 class TestTypeInferenceCanInfer:
     """Test cases for can_infer method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("123", True),  # Can infer as integer
-        ("hello", False),  # Cannot infer beyond string
-        ("", True),  # Empty string - treated as string
-        ("   ", True),  # Whitespace only - treated as string
-        (123, False),  # Not a string
-        (None, False),  # None value
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("123", True),  # Can infer as integer
+            ("hello", False),  # Cannot infer beyond string
+            ("", True),  # Empty string - treated as string
+            ("   ", True),  # Whitespace only - treated as string
+            (123, False),  # Not a string
+            (None, False),  # None value
+        ],
+    )
     def test_can_infer(self, value, expected):
         """Test can_infer method."""
         assert TypeInference.can_infer(value) == expected
@@ -35,18 +39,21 @@ class TestTypeInferenceCanInfer:
 class TestTypeInferenceInferType:
     """Test cases for infer_type method."""
 
-    @pytest.mark.parametrize("value,expected", [
-        ("123", DataType.INTEGER),
-        ("123.45", DataType.FLOAT),
-        ("true", DataType.BOOLEAN),
-        ("2023-01-01", DataType.DATE),
-        ("14:30:00", DataType.TIME),
-        ("2023-01-01T12:00:00", DataType.DATETIME),
-        ("hello", DataType.STRING),
-        ("", DataType.EMPTY),
-        ("none", DataType.NONE),
-        ("null", DataType.NONE),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            ("123", DataType.INTEGER),
+            ("123.45", DataType.FLOAT),
+            ("true", DataType.BOOLEAN),
+            ("2023-01-01", DataType.DATE),
+            ("14:30:00", DataType.TIME),
+            ("2023-01-01T12:00:00", DataType.DATETIME),
+            ("hello", DataType.STRING),
+            ("", DataType.EMPTY),
+            ("none", DataType.NONE),
+            ("null", DataType.NONE),
+        ],
+    )
     def test_infer_type(self, value, expected):
         """Test type inference for various inputs."""
         assert TypeInference.infer_type(value) == expected
@@ -179,9 +186,9 @@ class TestTypeInferenceInstanceMethods:
         """Test creating TypeInference instance."""
         ti = TypeInference()
         assert ti is not None
-        assert hasattr(ti, 'infer_type')
-        assert hasattr(ti, 'convert_value')
-        assert hasattr(ti, 'profile_values')
+        assert hasattr(ti, "infer_type")
+        assert hasattr(ti, "convert_value")
+        assert hasattr(ti, "profile_values")
 
     def test_instance_infer_type(self):
         """Test instance method for type inference."""
@@ -205,87 +212,95 @@ class TestTypeInferenceInstanceMethods:
 class TestTypeInferenceDuckTypingWrappers:
     """Test cases for duck typing wrapper methods."""
 
-    @pytest.mark.parametrize("value,expected", [
-        # Lists
-        ([], True),
-        ([1, 2, 3], True),
-        ((1, 2, 3), False),  # tuples don't have append/remove
-
-        # Strings
-        ("", False),
-        ("abc", False),
-
-        # Other
-        (123, False),
-        (None, False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Lists
+            ([], True),
+            ([1, 2, 3], True),
+            ((1, 2, 3), False),  # tuples don't have append/remove
+            # Strings
+            ("", False),
+            ("abc", False),
+            # Other
+            (123, False),
+            (None, False),
+        ],
+    )
     def test_is_list_like(self, value, expected):
         """Test is_list_like wrapper method."""
         assert TypeInference.is_list_like(value) == expected
 
-    @pytest.mark.parametrize("value,expected", [
-        # Dicts
-        ({}, True),
-        ({"a": 1}, True),
-        ([], False),  # lists don't have keys/get/values
-
-        # Other
-        (123, False),
-        (None, False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Dicts
+            ({}, True),
+            ({"a": 1}, True),
+            ([], False),  # lists don't have keys/get/values
+            # Other
+            (123, False),
+            (None, False),
+        ],
+    )
     def test_is_dict_like(self, value, expected):
         """Test is_dict_like wrapper method."""
         assert TypeInference.is_dict_like(value) == expected
 
-    @pytest.mark.parametrize("value,expected", [
-        # Iterables
-        ([], True),
-        ([1, 2, 3], True),
-        ((1, 2, 3), True),
-        ("abc", True),
-        ({}, True),
-
-        # Non-iterables
-        (123, False),
-        (None, False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Iterables
+            ([], True),
+            ([1, 2, 3], True),
+            ((1, 2, 3), True),
+            ("abc", True),
+            ({}, True),
+            # Non-iterables
+            (123, False),
+            (None, False),
+        ],
+    )
     def test_is_iterable(self, value, expected):
         """Test is_iterable wrapper method."""
         assert TypeInference.is_iterable(value) == expected
 
-    @pytest.mark.parametrize("value,expected", [
-        # Iterables that are not strings
-        ([], True),
-        ([1, 2, 3], True),
-        ((1, 2, 3), True),
-        ({}, True),
-
-        # Strings
-        ("", False),
-        ("abc", False),
-
-        # Non-iterables
-        (123, False),
-        (None, False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Iterables that are not strings
+            ([], True),
+            ([1, 2, 3], True),
+            ((1, 2, 3), True),
+            ({}, True),
+            # Strings
+            ("", False),
+            ("abc", False),
+            # Non-iterables
+            (123, False),
+            (None, False),
+        ],
+    )
     def test_is_iterable_not_string(self, value, expected):
         """Test is_iterable_not_string wrapper method."""
         assert TypeInference.is_iterable_not_string(value) == expected
 
-    @pytest.mark.parametrize("value,expected", [
-        # Empty values
-        (None, True),
-        ("", True),
-        ("   ", True),
-        ([], True),
-        ({}, True),
-
-        # Non-empty values
-        ("abc", False),
-        ([1, 2, 3], False),
-        ({"a": 1}, False),
-        (123, False),
-    ])
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            # Empty values
+            (None, True),
+            ("", True),
+            ("   ", True),
+            ([], True),
+            ({}, True),
+            # Non-empty values
+            ("abc", False),
+            ([1, 2, 3], False),
+            ({"a": 1}, False),
+            (123, False),
+        ],
+    )
     def test_is_empty(self, value, expected):
         """Test is_empty wrapper method."""
         assert TypeInference.is_empty(value) == expected
@@ -296,12 +311,12 @@ class TestTypeInferenceProfileValuesEdgeCases:
 
     def test_profile_values_non_iterable(self):
         """Test profile_values with non-iterable input."""
-        with pytest.raises(ValueError, match="values must be iterable"):
+        with pytest.raises(SplurgeTyperValueError, match="values must be iterable"):
             TypeInference.profile_values("not_iterable")
 
     def test_profile_values_non_iterable_not_string(self):
         """Test profile_values with non-iterable non-string input."""
-        with pytest.raises(ValueError, match="values must be iterable"):
+        with pytest.raises(SplurgeTyperValueError, match="values must be iterable"):
             TypeInference.profile_values(123)
 
     def test_profile_values_empty_list(self):
@@ -383,11 +398,7 @@ class TestTypeInferenceNativeObjectsAndStrings:
     def test_native_date_objects(self):
         """Test type inference with native date objects."""
         # Create a collection with native date objects
-        date_objects = [
-            date(2023, 12, 25),
-            date(2024, 1, 1),
-            date(2024, 12, 31)
-        ]
+        date_objects = [date(2023, 12, 25), date(2024, 1, 1), date(2024, 12, 31)]
 
         # Convert to strings for TypeInference (since it expects strings)
         date_strings = [d.isoformat() for d in date_objects]
@@ -400,7 +411,7 @@ class TestTypeInferenceNativeObjectsAndStrings:
         datetime_objects = [
             datetime(2023, 12, 25, 14, 30, 0),
             datetime(2024, 1, 1, 9, 0, 0),
-            datetime(2024, 12, 31, 23, 59, 59)
+            datetime(2024, 12, 31, 23, 59, 59),
         ]
 
         # Convert to strings for TypeInference
@@ -411,11 +422,7 @@ class TestTypeInferenceNativeObjectsAndStrings:
     def test_native_time_objects(self):
         """Test type inference with native time objects."""
         # Create a collection with native time objects
-        time_objects = [
-            time(14, 30, 0),
-            time(9, 15, 30),
-            time(23, 59, 59)
-        ]
+        time_objects = [time(14, 30, 0), time(9, 15, 30), time(23, 59, 59)]
 
         # Convert to strings for TypeInference
         time_strings = [t.isoformat() for t in time_objects]

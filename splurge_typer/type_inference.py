@@ -1,21 +1,9 @@
-"""
-type_inference module - Provides comprehensive type inference and value conversion utilities
+"""Type inference and conversion utilities.
 
-This module offers a complete set of tools for intelligent type analysis and conversion:
-- Single value type inference from strings and native types
-- Collection profiling to determine dominant data types across datasets
-- Automatic value conversion to inferred types with proper error handling
-- Performance-optimized incremental type checking for large datasets
-- Mixed type detection and analysis
-- Duck typing utilities for flexible object behavior detection
-- Support for all major Python types including dates, times, and datetimes
-
-Key Features:
-- Efficient processing of large datasets with early termination optimization
-- Configurable thresholds for incremental type checking
-- Comprehensive type coverage including booleans, integers, floats, dates, times, datetimes
-- Robust handling of edge cases (empty values, None, mixed types)
-- Integration with string parsing and duck typing modules
+Provides a high-level API for inferring data types from values and converting
+values to their inferred native Python types. The implementation is optimized
+for both single-value and collection analysis and integrates with string
+parsing and duck-typing utilities provided elsewhere in the package.
 
 Copyright (c) 2025 Jim Schilling
 
@@ -29,6 +17,7 @@ from typing import Any
 
 from splurge_typer.data_type import DataType
 from splurge_typer.duck_typing import DuckTyping
+from splurge_typer.exceptions import SplurgeTyperValueError
 from splurge_typer.string import String
 
 
@@ -240,7 +229,6 @@ class TypeInference:
             return ""
         return value
 
-
     @staticmethod
     def _determine_type_from_counts(
         types: dict[str, int],
@@ -334,7 +322,7 @@ class TypeInference:
         """
         if not DuckTyping.is_iterable_not_string(values):
             msg = "values must be iterable"
-            raise ValueError(msg)
+            raise SplurgeTyperValueError(msg)
 
         # Convert to list to handle generators and ensure we can iterate multiple times
         values_list: list[Any] = list(values)
@@ -543,5 +531,3 @@ class TypeInference:
             >>> TypeInference.is_empty([1, 2, 3])      # False
         """
         return DuckTyping.is_empty(value)
-
-

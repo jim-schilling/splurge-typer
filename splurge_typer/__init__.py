@@ -1,31 +1,19 @@
-"""
-splurge-typer - Type Inference and Conversion Library
+"""splurge-typer package.
 
-This package provides comprehensive utilities for inferring Python data types from string values
-and converting between different data representations.
+Utilities for inferring Python data types from strings and converting between
+different data representations.
 
-Main Features:
-- Single value type inference from strings
-- Collection type analysis for determining dominant types
-- Automatic type conversion with proper error handling
-- Support for all major Python types including dates, times, and datetimes
-- Performance optimizations for large datasets
+This package exposes the primary APIs used by consumers:
 
-Example Usage:
+Examples:
+
     >>> from splurge_typer import TypeInference, DataType
-    >>>
-    >>> # Single value inference
     >>> ti = TypeInference()
     >>> ti.infer_type('123')
     DataType.INTEGER
-    >>>
-    >>> # Collection analysis
-    >>> ti.profile_values(['1', '2', '3'])
-    DataType.INTEGER
-    >>>
-    >>> # Type conversion
-    >>> ti.convert_value('123')
-    123
+
+Attributes:
+    __version__ (str): The package version.
 
 Copyright (c) 2025 Jim Schilling
 
@@ -39,5 +27,11 @@ from splurge_typer.duck_typing import DuckTyping
 from splurge_typer.string import String
 from splurge_typer.type_inference import TypeInference
 
-__version__ = "2025.0.1"
-__all__ = ["DataType", "String", "TypeInference", "DuckTyping"]
+__version__ = "2025.1.0"
+__all__ = [
+    "DataType",
+    "String",
+    "TypeInference",
+    "DuckTyping",
+    # Exception classes are available from the submodule `splurge_typer.exceptions`
+]

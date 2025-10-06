@@ -4,16 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "splurge-typer"
-version = "2025.0.1"
+version = "2025.1.0"
 description = "Type Inference and Conversion Library for Python"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    {name = "Jim Schilling"},
-]
-maintainers = [
-    {name = "Jim Schilling"},
+    { name = "Jim Schilling" },
 ]
 keywords = ["type-inference", "data-conversion", "python", "typing", "data-processing"]
 classifiers = [
@@ -35,6 +32,17 @@ Homepage = "http://github.com/jim-schilling/splurge-typer"
 Repository = "http://github.com/jim-schilling/splurge-typer"
 Issues = "http://github.com/jim-schilling/splurge-typer/issues"
 Changelog = "http://github.com/jim-schilling/splurge-typer/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.3",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",
+    "hypothesis>=6.0",
+    "mypy>=1.9",
+    "ruff>=0.18",
+    "pre-commit>=3.4",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -63,12 +71,17 @@ ignore = [
     "C901", # too complex
 ]
 
+[tool.hypothesis]
+max_examples = 200
+deadline = 200
+suppress_health_check = ["data_too_large", "too_slow"]
+
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
 "tests/**/*" = ["B011"]  # assert false
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.12"
 check_untyped_defs = true
 disallow_any_generics = true
 disallow_incomplete_defs = true
@@ -78,6 +91,7 @@ warn_redundant_casts = true
 warn_return_any = true
 warn_unused_configs = true
 warn_unused_ignores = true
+exclude = "tests/.*"
 
 [[tool.mypy.overrides]]
 module = "tests.*"
@@ -93,14 +107,10 @@ addopts = [
     "-v",
     "--strict-markers",
     "--strict-config",
-    "--cov=splurge_typer",
-    "--cov-report=term-missing",
-    "--cov-report=html:htmlcov",
-    "--cov-report=xml",
-    "--cov-fail-under=85",
+    "-n 4",
 ]
 markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "slow: marks tests as slow (deselect with '-m \\\"not slow\\\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
 ]
@@ -120,6 +130,6 @@ exclude_lines = [
     "raise AssertionError",
     "raise NotImplementedError",
     "if __name__ == .__main__.:",
-    "class .*\\bProtocol\\):",
-    "@(abc\\.)?abstractmethod",
+    "class .*\\\\bProtocol\\):",
+    "@(abc\\\\.)?abstractmethod",
 ]

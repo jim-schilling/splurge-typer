@@ -138,16 +138,16 @@ def main():
 
     # Simulate messy real-world data
     messy_data = [
-        "123",      # Valid integer
+        "123",  # Valid integer
         "  456  ",  # Integer with whitespace
-        "789.12",   # Valid float
-        "abc",      # Invalid - string
-        "",         # Empty
-        "   ",      # Whitespace only
-        "true",     # Valid boolean
+        "789.12",  # Valid float
+        "abc",  # Invalid - string
+        "",  # Empty
+        "   ",  # Whitespace only
+        "true",  # Valid boolean
         "2023-01-01",  # Valid date
         "not-a-date",  # Invalid date
-        "25:00:00",    # Invalid time
+        "25:00:00",  # Invalid time
     ]
 
     print("   Analyzing messy dataset:")
@@ -158,16 +158,12 @@ def main():
     for value in messy_data:
         inferred_type = ti.infer_type(value)
         can_infer = TypeInference.can_infer(value)
-        analysis_results.append({
-            'value': value,
-            'type': inferred_type.value,
-            'can_infer': can_infer
-        })
+        analysis_results.append({"value": value, "type": inferred_type.value, "can_infer": can_infer})
 
     # Group by type
     type_counts = {}
     for result in analysis_results:
-        type_name = result['type']
+        type_name = result["type"]
         type_counts[type_name] = type_counts.get(type_name, 0) + 1
 
     print("   Type distribution:")
@@ -177,7 +173,7 @@ def main():
     # Show detailed analysis
     print("   Detailed analysis:")
     for result in analysis_results:
-        status = "✓" if result['can_infer'] else "✗"
+        status = "✓" if result["can_infer"] else "✗"
         print(f"     '{result['value']}': {result['type']} {status}")
 
     print()
