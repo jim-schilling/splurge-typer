@@ -1,5 +1,6 @@
 # splurge-typer - Detailed Project Documentation
 
+
 ## Project Overview
 
 **splurge-typer** is a comprehensive Python library for automatic type inference and conversion from string values. It provides robust utilities for analyzing individual string values or entire collections to determine the most appropriate Python data type, with efficient conversion capabilities.
