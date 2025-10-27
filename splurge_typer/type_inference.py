@@ -321,8 +321,7 @@ class TypeInference:
             >>> profile_values(['1', '2', '3'], use_incremental_typecheck=False)  # Full analysis
         """
         if not DuckTyping.is_iterable_not_string(values):
-            msg = "values must be iterable"
-            raise SplurgeTyperValueError(msg)
+            raise SplurgeTyperValueError(message="values must be iterable", error_code="value-not-iterable")
 
         # Convert to list to handle generators and ensure we can iterate multiple times
         values_list: list[Any] = list(values)

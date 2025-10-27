@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "splurge-typer"
-version = "2025.1.0"
+version = "2025.2.0"
 description = "Type Inference and Conversion Library for Python"
 readme = "README.md"
 license = "MIT"
@@ -25,7 +25,9 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Utilities",
 ]
-dependencies = []
+dependencies = [
+    "splurge-exceptions>=2025.1.0,<2025.2.0",
+]
 
 [project.urls]
 Homepage = "http://github.com/jim-schilling/splurge-typer"

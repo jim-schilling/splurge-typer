@@ -2,7 +2,16 @@
 
 **Type Inference and Conversion Library for Python**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![PyPI version](https://badge.fury.io/py/splurge-typer.svg)](https://pypi.org/project/splurge-typer/)
+[![Python versions](https://img.shields.io/pypi/pyversions/splurge-typer.svg)](https://pypi.org/project/splurge-typer/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+[![CI](https://github.com/jim-schilling/splurge-typer/actions/workflows/ci-quick-test.yml/badge.svg)](https://github.com/jim-schilling/splurge-typer/actions/workflows/ci-quick-test.yml)
+[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)](https://github.com/jim-schilling/splurge-typer)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![mypy](https://img.shields.io/badge/mypy-checked-black)](https://mypy-lang.org/)
+
 
 splurge-typer is a comprehensive Python library for inferring data types from string values and converting between different data representations. It can analyze individual string values or entire collections to determine the most appropriate Python data type.
 

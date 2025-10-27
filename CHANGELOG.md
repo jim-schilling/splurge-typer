@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) (CalVer).
 
+## [2025.2.0] - 2025-10-26
+### Changed/Updated
+- `SplurgeTyperError` now inherits from `SplurgeFrameworkError` in the `splurge_exceptions` package for better integration with the broader Splurge ecosystem.
+- Added dependency on `splurge_exceptions` in `pyproject.toml`.
+- Bumped version to 2025.2.0.
+
+### Removed
+- Removed unused exception classes.
+
 ## [2025.1.0] - 2025-10-05
 ### Added
 - Dev tooling and project configuration
