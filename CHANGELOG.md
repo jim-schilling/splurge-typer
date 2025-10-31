@@ -11,6 +11,7 @@ and this project adheres to [Calendar Versioning](https://calver.org/) (CalVer).
 - Added a command-line interface (CLI) entry point `splurge-typer` for printing version information.
 - Added vendored `splurge-exceptions` package to replace `pip`-installed dependency, improving portability and ease of installation.
 - Added test for the CLI version command.
+- Added `__init__.py` to `examples/` directory to make it discoverable as a package for `mypy` type checking overrides.
 
 ### Changed/Updated
 - Updated `pyproject.toml` to include the new CLI entry point under `[project.scripts]`.
