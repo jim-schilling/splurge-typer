@@ -12,7 +12,7 @@ This module is licensed under the MIT License.
 
 from __future__ import annotations
 
-from splurge_exceptions import SplurgeFrameworkError  # type: ignore
+from ._vendor.splurge_exceptions.core.exceptions import SplurgeFrameworkError
 
 
 class SplurgeTyperError(SplurgeFrameworkError):

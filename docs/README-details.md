@@ -379,4 +379,10 @@ Comprehensive API documentation is available at:
 
 [API Reference](./api/API-REFERENCE.md)
 
+## CLI Reference
+
+For information about the command-line interface, including the `--version` flag and other CLI options, see:
+
+[CLI Reference](./cli/CLI-REFERENCE.md)
+
 This file contains detailed usage examples, method signatures, and error handling guidance.

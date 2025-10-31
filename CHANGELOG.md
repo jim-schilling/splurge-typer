@@ -5,7 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) (CalVer).
 
+## [2025.3.0] - 2025-10-31
+
+### Added
+- Added a command-line interface (CLI) entry point `splurge-typer` for printing version information.
+- Added vendored `splurge-exceptions` package to replace `pip`-installed dependency, improving portability and ease of installation.
+- Added test for the CLI version command.
+
+### Changed/Updated
+- Updated `pyproject.toml` to include the new CLI entry point under `[project.scripts]`.
+- Bumped version to 2025.3.0 in `pyproject.toml` and `splurge_typer/__init__.py`.
+- Updated all `splurge_typer` import paths to use relative imports for better package structure.
+- Updated `.pre-commit-config.yaml` to run `mypy .` instead of `mypy splurge_typer` for broader type checking.
+- Updated `ci-lint-and-typecheck.yml` workflow to run `mypy .`.
+- Updated `mypy` configuration in `pyproject.toml` for broader type checking.
+- Updated `tool.coverage` configuration in `pyproject.toml` to omit vendored packages from coverage reports.
+
+### Removed
+- Package dependency on external `splurge_exceptions` removed in favor of vendored copy.
+
+### Fixed
+- Fixed type hints in `string.py` to include `int`.
+
 ## [2025.2.0] - 2025-10-26
+
 ### Changed/Updated
 - `SplurgeTyperError` now inherits from `SplurgeFrameworkError` in the `splurge_exceptions` package for better integration with the broader Splurge ecosystem.
 - Added dependency on `splurge_exceptions` in `pyproject.toml`.
@@ -15,6 +38,7 @@ and this project adheres to [Calendar Versioning](https://calver.org/) (CalVer).
 - Removed unused exception classes.
 
 ## [2025.1.0] - 2025-10-05
+
 ### Added
 - Dev tooling and project configuration
   - Added development dependencies and tool sections to `pyproject.toml` (pytest, pytest-cov, pytest-xdist, hypothesis, mypy, ruff, pre-commit).

@@ -15,7 +15,7 @@ import re
 from datetime import date, datetime, time
 from typing import Any
 
-from splurge_typer.data_type import DataType
+from .data_type import DataType
 
 
 class String:
@@ -248,7 +248,7 @@ class String:
             normalized = value.strip() if trim else value
             return cls._FLOAT_REGEX.match(normalized) is not None
 
-        return False
+        return False  # type: ignore
 
     @classmethod
     def is_int_like(
@@ -805,7 +805,7 @@ class String:
     @classmethod
     def infer_type(
         cls,
-        value: str | bool | float | date | time | datetime | None,
+        value: str | bool | int | float | date | time | datetime | None,
         *,
         trim: bool = True,
     ) -> DataType:
