@@ -15,10 +15,10 @@ This module is licensed under the MIT License.
 from collections.abc import Iterable
 from typing import Any
 
-from splurge_typer.data_type import DataType
-from splurge_typer.duck_typing import DuckTyping
-from splurge_typer.exceptions import SplurgeTyperValueError
-from splurge_typer.string import String
+from .data_type import DataType
+from .duck_typing import DuckTyping
+from .exceptions import SplurgeTyperValueError
+from .string import String
 
 
 class TypeInference:
@@ -311,7 +311,7 @@ class TypeInference:
             DataType enum value representing the inferred type
 
         Raises:
-            ValueError: If values is not iterable
+            SplurgeTyperValueError: If values is not iterable
 
         Examples:
             >>> profile_values(['1', '2', '3'])           # DataType.INTEGER

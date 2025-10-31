@@ -11,14 +11,14 @@ repos:
 
       - id: system-mypy
         name: System Mypy
-        entry: mypy splurge_typer
+        entry: mypy .
         language: system
         pass_filenames: false
         stages: [pre-commit]
         
       - id: system-pytest
         name: System Pytest
-        entry: pytest -q -n 4
+        entry: pytest -q -n 2
         language: system
         pass_filenames: false
         stages: [pre-commit]

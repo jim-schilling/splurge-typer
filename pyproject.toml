@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "splurge-typer"
-version = "2025.2.0"
+version = "2025.3.0"
 description = "Type Inference and Conversion Library for Python"
 readme = "README.md"
 license = "MIT"
@@ -25,9 +25,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Utilities",
 ]
-dependencies = [
-    "splurge-exceptions>=2025.1.0,<2025.2.0",
-]
+dependencies = []
 
 [project.urls]
 Homepage = "http://github.com/jim-schilling/splurge-typer"
@@ -45,6 +43,9 @@ dev = [
     "ruff>=0.12.12",
     "pre-commit>=3.4",
 ]
+
+[project.scripts]
+splurge-typer = "splurge_typer.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -84,20 +85,29 @@ suppress_health_check = ["data_too_large", "too_slow"]
 
 [tool.mypy]
 python_version = "3.12"
-check_untyped_defs = true
-disallow_any_generics = true
-disallow_incomplete_defs = true
-disallow_untyped_defs = true
-no_implicit_optional = true
-warn_redundant_casts = true
 warn_return_any = true
 warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
 warn_unused_ignores = true
-exclude = "tests/.*"
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+# Allow missing imports for vendored/external helper package used at runtime
+ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = "tests.*"
+module = ["tests.*"]
 ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = ["examples.*"]
+check_untyped_defs = false
+disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -109,7 +119,7 @@ addopts = [
     "-v",
     "--strict-markers",
     "--strict-config",
-    "-n 4",
+    "-n 2",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \\\"not slow\\\"')",
@@ -120,9 +130,12 @@ markers = [
 [tool.coverage.run]
 source = ["splurge_typer"]
 omit = [
-    "tests/**/*",
-    "*/test_*.py",
-    "setup.py",
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/_vendor/*"
 ]
 
 [tool.coverage.report]
@@ -134,4 +147,12 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "class .*\\\\bProtocol\\):",
     "@(abc\\\\.)?abstractmethod",
+]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/_vendor/*",
 ]
